@@ -4,31 +4,40 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import { Alert } from 'react-native';
 
 export default function App() {
+  // State variable to store the camera permission status
   const [hasPermission, setHasPermission] = useState(null);
+  // State variable to control the barcode scanner
   const [isScannerActive, setIsScannerActive] = useState(true);
 
+  // useEffect hook to request camera permission when the component mounts
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
+      // Set hasPermission based on the permission status
       setHasPermission(status === 'granted');
     })();
   }, []);
 
+  // Function to handle barcode scanning
   const handleBarCodeScanned = ({ type, data }) => {
-    console.log(isScannerActive);
+    // If the scanner is not active, return immediately
     if (!isScannerActive) return;
+    // Set isScannerActive to false to pause the scanner
     setIsScannerActive(false);
+    // Show an alert with the type and data of the scanned barcode
     Alert.alert(
       `Bar code with type ${type} and data ${data} has been scanned!`,
       '',
       [
         { text: 'OK', onPress: () => {
-          console.log('this');
+          // Set isScannerActive to true to resume the scanner when the OK button is pressed
           setIsScannerActive(true)
         } }
       ]
     );
   };
+
+  // Function to render the camera view
   const renderCamera = () => {
     return (
       <View style={styles.cameraContainer}>
@@ -40,10 +49,12 @@ export default function App() {
     );
   };
 
+  // If hasPermission is null, render a blank view
   if (hasPermission === null) {
     return <View />;
   }
 
+  // If hasPermission is false, render a view with a text component informing the user that camera permission was not granted
   if (hasPermission === false) {
     return (
       <View style={styles.container}>
@@ -52,6 +63,7 @@ export default function App() {
     );
   }
 
+  // If hasPermission is true, render the main view of the app
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to the Barcode Scanner App!</Text>
@@ -68,6 +80,7 @@ export default function App() {
   );
 }
 
+// Styles for the components in the app
 const styles = StyleSheet.create({
   container: {
     flex: 1,
