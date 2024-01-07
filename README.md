@@ -32,3 +32,34 @@ These instructions will get you a copy of the project up and running on your loc
 - [React Native](https://reactnative.dev/)
 - [Expo](https://expo.io/)
 - [expo-barcode-scanner](https://docs.expo.io/versions/latest/sdk/bar-code-scanner/)
+
+### Documentation
+
+## App.js
+
+This is the main component of the Barcode Scanner App. It handles the barcode scanning functionality and renders the user interface.
+
+## State Variables
+
+- `hasPermission`: A boolean that indicates whether the app has permission to use the camera.
+- `isScannerActive`: A boolean that controls whether the barcode scanner is active.
+
+## Functions
+
+- `handleBarCodeScanned({ type, data })`: This function is called when a barcode is scanned. It checks if the scanner is active, and if it is, it sets `isScannerActive` to `false` and shows an alert with the type and data of the scanned barcode. When the OK button in the alert is pressed, it sets `isScannerActive` back to `true`.
+
+- `renderCamera()`: This function returns the `BarCodeScanner` component wrapped in a view.
+
+## useEffect Hook
+
+The `useEffect` hook is used to request camera permission when the component mounts. If permission is granted, it sets `hasPermission` to `true`. If permission is not granted, it sets `hasPermission` to `false`.
+
+## Rendering
+
+- If `hasPermission` is `null`, a blank view is rendered.
+- If `hasPermission` is `false`, a view with a text component is rendered to inform the user that camera permission was not granted.
+- If `hasPermission` is `true`, the main view of the app is rendered. This view contains a welcome text, a paragraph, the `BarCodeScanner` component, and a button to start the scanner.
+
+## Styles
+
+The `styles` object contains the styles for the components in the app. It uses `StyleSheet.create` to create the styles.
