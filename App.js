@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { Camera } from 'expo-camera';
+import { Alert } from 'react-native';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+  const [isScannerActive, setIsScannerActive] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -15,15 +15,25 @@ export default function App() {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    console.log(isScannerActive);
+    if (!isScannerActive) return;
+    setIsScannerActive(false);
+    Alert.alert(
+      `Bar code with type ${type} and data ${data} has been scanned!`,
+      '',
+      [
+        { text: 'OK', onPress: () => {
+          console.log('this');
+          setIsScannerActive(true)
+        } }
+      ]
+    );
   };
-
   const renderCamera = () => {
     return (
       <View style={styles.cameraContainer}>
         <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={handleBarCodeScanned}
           style={styles.camera}
         />
       </View>
@@ -49,8 +59,8 @@ export default function App() {
       {renderCamera()}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => setScanned(false)}
-        disabled={scanned}
+        onPress={() => setIsScannerActive(true)}
+        disabled={isScannerActive}
       >
         <Text style={styles.buttonText}>Scan QR to Start your job</Text>
       </TouchableOpacity>
