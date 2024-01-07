@@ -33,7 +33,7 @@ These instructions will get you a copy of the project up and running on your loc
 - [Expo](https://expo.io/)
 - [expo-barcode-scanner](https://docs.expo.io/versions/latest/sdk/bar-code-scanner/)
 
-### Documentation
+# Documentation
 
 ## App.js
 
